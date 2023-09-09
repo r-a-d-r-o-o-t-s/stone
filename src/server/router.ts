@@ -11,7 +11,7 @@ import { Request, Response, Router } from "express";
  * @notes [ ]
  *
  */
-const router = Router();
+const router: Router = Router();
 router.get(`/breathe`, (_: Request, res: Response) => {
     res.status(200).send();
 })

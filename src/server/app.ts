@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: UNLICENSED
 
 import cors from "cors";
-import express from "express";
+import express, { Express } from "express";
 import rateLimit from 'express-rate-limit';
 import helmet from "helmet";
 import morgan from "morgan";
@@ -18,7 +18,7 @@ const { STONE_CORS_ORIGIN } = envstone
  * @notes [ ]
  *
  */
-export const app = express();
+export const app: Express = express();
 app
     .disable("x-powered-by")
     .use(morgan("dev"))
