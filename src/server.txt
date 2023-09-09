@@ -1,0 +1,51 @@
+import { MailClasses, MailClient } from '@radroots-focus/mail';
+import { json, urlencoded } from "body-parser";
+import cors from "cors";
+import express from "express";
+import morgan from "morgan";
+
+export const createServer = () => {
+  const app = express();
+
+  const mail = new MailClasses({
+    basis: {
+      client: MailClient(),
+      domain: `radroots.dev`
+    }
+  })
+
+  app
+    .disable("x-powered-by")
+    .use(morgan("dev"))
+    .use(urlencoded({ extended: true }))
+    .use(json())
+    .use(cors({
+      origin: `https://ya.com`,
+      credentials: true,
+    }))
+    .get("/message/:name", (req, res) => {
+      return res.json({ message: `hello ${req.params.name}` });
+    })
+    .get("/health", (_, res) => {
+      return res.json({ ok: true });
+    })
+    .get("/mailsend", async (_, res) => {
+      try {
+        const re = await mail.send.moment({
+          glossa: `en`,
+          to: `triesap@icloud.com`,
+          from: `admin`,
+          subject: `test`,
+          text: `rad roots`,
+        })
+
+        console.log(re, `res`);
+        return res.json({ ok: true });
+      } catch (e) {
+        console.log(e, `e`);
+        return res.json({ ok: true });
+      }
+    });
+
+  return app;
+};
